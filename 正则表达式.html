@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>正则表达式</title>
+</head>
+<body>
+	<script>
+		var str = "hello world";
+		var re = new RegExp("world");
+		str = str.replace(re,"javascript");
+		// console.log(re.test(str));
+		// console.log(re.exec(str));
+		// exec方法 返回一个数组 数组第一个元素是整个表达式 剩下的都是子表达式
+
+		// c{1} 表示只匹配一个c
+		// c{n} 表示匹配n个连续的c
+		re = new RegExp("h{1}");
+		// alert(re.exec(str));
+		// c{3,4} 表示匹配连续的3个c或4个c
+		str = "hhh3a";
+		re = new RegExp("h{3,4}");
+		// alert(re.exec(str));
+		// c{1,} 表示匹配一个或一个以上的连续c
+		str = "cc3ac1b2";
+		re = new RegExp("c{1,}");
+		// alert(re.exec(str));
+
+		// * 表示0个或多个 等同于 {0,} c* 与 c{0,} 是一个意思
+		// + 表示1个或多个 等同于 {1,} c+ 与 c{1,} 是一个意思
+		// ? 表示0个或1个 等同于 {0,1} c? 与 c{0,1} 是一个意思
+
+		// 非贪婪模式：量词后面跟个?
+		str = "ccc123";
+		re = new RegExp("c{1,}?");
+		// alert(re.exec(str));  //只输出一个c 因为后面跟?了 就是非贪心模式
+
+		str = "ccc123";
+		re = new RegExp("^c");  //以c开头
+		// alert(re.exec(str));
+
+		str = "123c";
+		re = new RegExp("c$");  //以c结尾
+		// alert(re.exec(str));
+
+		str = "a1b2c3";
+		re = new RegExp(".+");	//匹配除\n之外的所有字符 遇到\n就停
+		// alert(re.exec(str));
+
+		str = "\nabc123";
+		re = new RegExp("^.");	//如果以\n开头就输出null 否则输出第一个字母
+		// alert(re.exec(str));
+
+		str = "a1c2b3";
+		re = new RegExp("b|c");
+		// alert(re.exec(str));
+
+		str = "b1bc2a3";
+		re = new RegExp("^b|c.+");  //以b开头或 这个字符串中c到最后
+		// alert(re.exec(str));
+		str = "b1c2a3";
+		re = new RegExp("^(b|c).+");  //以b开头或以c开头一直到最后 再加上个b
+		// alert(re.exec(str));
+
+		// [abc]表示a,b,c中任意一个字符
+		str = "a1b2c3";
+		re = new RegExp("^[abc]");
+		// alert(re.exec(str));
+
+		str = "a123b456";
+		// 以小写字母开头并且后面跟着数字字母下划线
+		re = new RegExp("^[a-z][a-zA-Z0-9_]+");
+		// alert(re.exec(str));
+
+		// 把^放在[]里表示排除
+		str = "ba123b456c1";
+		re = new RegExp("[^abc]");  //开头要是有a,b,c任何一个都给排掉
+		// alert(re.exec(str));
+		// [^0-9]表示非数字开头 [^a-z]表示非小写字母开头
+
+		// \b表示边界 把\b放在c左边表示c在左边界 把\b放在c右边表示c在右边界
+		str = "a b c";
+		re = new RegExp("c\\b");	//加两个\为了转义
+		// alert(re.exec(str));
+		str = "acb";
+		re = new RegExp("c\\B");
+		// alert(re.exec(str));
+
+		// \d表示数字 \D表示非数字
+		str = "a123b456";
+		re = new RegExp("\\d");
+		// alert(re.exec(str));
+
+		// \s匹配空白字符 比如说空格、换行、换页
+		str = "What is your name?";
+		re = new RegExp("\\s.+");
+		// alert(re.exec(str));
+		// \S匹配非空白字符
+		str = "  What is your name?";
+		re = new RegExp("\\S.+");
+		// alert(re.exec(str));
+
+		// \w 等同于 [a-zA-Z0-9_]
+		str = "gget123";
+		// re = new RegExp("\\w+");
+		// alert(re.exec(str));
+		// \W 等同于 [^a-zA-Z0-9_];
+
+		// 反向引用
+		str = "gget123";
+		// \1就是第一个()匹配到的内容
+		re = new RegExp("(\\w)(\\1)"); //这样写就想判断前两个字母是否一样
+		// alert(re.exec(str));
+		str = "woowaaa";
+		re = new RegExp("(\\w)(\\w)\\2\\1"); //这样写就是想判断前4个字母是否对称
+		// alert(re.exec(str));
+
+		// 取出结尾的两位数字
+		var str = "sadf12a40";
+		re = new RegExp("\\d{2}$");
+		// alert(re.exec(str));
+
+		// 取出结尾的所有数字
+		var str = "abc132a1234";
+		re = new RegExp("\\d+$");
+		// re = /\d+$/;
+		// alert(re.exec(str));
+
+		// 统一空格个数
+		str = "蓝 色  理   想";
+		// re = new RegExp("\s");
+		re = /\s+/g;
+		str = str.replace(re," ");
+		// alert(re.exec(str).length);
+		// alert(str);
+
+		// 判断一个字符串是否是数字
+		str = "123456";
+		re = new RegExp("^\\d*$");
+		// alert(re.exec(str));
+
+		// 判断一个字符串是否是手机号码
+		str = "13100987986";
+		re = new RegExp("^(13|15)\\d{9}$");
+		// alert(re.exec(str));
+
+		// 限制文本框只能输入数字和小数点
+		str = "10.05";
+		re = new RegExp("^\\d*\.?\\d{2}$");
+		// alert(re.exec(str));
+
+		// 去掉所有标签
+		str = "标题<h1>abc123</h1>";
+		re = /<[^>]+>/gi;
+		str = str.replace(re,"");
+		// alert(str);
+
+		//把所有数字替换成空格
+		str = "a1b2c3";
+		// re = /\d/g;
+		re = new RegExp("\\d","g");
+		str = str.replace(re," ");
+		// alert(str);
+
+		// 邮箱必须以数字或字母开头后面有0个或多个点 以@163.com结尾
+		// str = "1+23@163.com";
+		// re1 = /^[0-9a-zA-Z]+\.*@163\.com$/;
+		// re = new RegExp("^[0-9a-zA-Z]+\\.*@163\\.com$");
+		// alert(re.exec(str));
+		// alert(str.match(re));
+		// console.log(re);
+		// console.log(re1);
+		// str = "1234@163.com";
+		// re = /@163\.com$/;
+		// if( !re.exec(str) ){
+		// 	alert("false");
+		// }else{
+		// 	alert("true");
+		// }
+
+	</script>
+</body>
+</html>
